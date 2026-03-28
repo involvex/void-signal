@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="de">
+	<head>
+		<meta charset="UTF-8" />
+		<title>ASCII 2D Scene — Parallax + Character</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				background: #010008;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				gap: 8px;
+				font-family: 'Courier New', monospace;
+			}
+			#wrap {
+				border: 1px solid #2a1550;
+				box-shadow:
+					0 0 60px rgba(80, 0, 180, 0.25),
+					0 0 120px rgba(60, 0, 140, 0.1);
+				position: relative;
+			}
+			canvas {
+				display: block;
+			}
+			#bar {
+				display: flex;
+				justify-content: space-between;
+				padding: 5px 12px;
+				font-size: 10px;
+				letter-spacing: 0.12em;
+				background: #030112;
+				border-top: 1px solid #180a30;
+				color: #3a1870;
+			}
+			#hint {
+				font-size: 10px;
+				color: #221040;
+				letter-spacing: 0.1em;
+			}
+			#coords {
+				color: #5a30a0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<canvas id="c"></canvas>
+			<div id="bar">
+				<span>VOID_RUINS // B3</span>
+				<span id="coords">—</span>
+				<span>← → WASD · SPACE jump · R reset</span>
+			</div>
+		</div>
+		<div id="hint">
+			parallax background · animated torches · physics · walk cycle
+		</div>
+
+		<script>
+			'use strict'
+
+			// ══════════════════════════════════════════
+			//  CONSTANTS
+			// ══════════════════════════════════════════
+			const CW = 10 // cell width  (px)
+			const CH = 17 // cell height (px)
+			const COLS = 90 // visible columns
+			const ROWS = 27 // visible rows
+			const WORLD_W = 270 // world width (cells)
+			const GROUND_Y = 22 // row where ground begins (top surface)
+
+			const GRAVITY = 0.38
+			const JUMP_V = -8.2
+			const MOVE_SPD = 3.6
+			const COYOTE = 7 // coyote-time frames
+			const JBUF = 9 // jump-buffer frames
+
+			// ══════════════════════════════════════════
+			//  CANVAS
+			// ══════════════════════════════════════════
+			const canvas = document.getElementById('c')
+			canvas.width = COLS * CW // 900
+			canvas.height = ROWS * CH // 459
+			const ctx = canvas.getContext('2d')
+
+			function setFont() {
+				ctx.font = '14px "Courier New", monospace'
+				ctx.textBaseline = 'top'
+			}
+			setFont()
+
+			// ══════════════════════════════════════════
+			//  SEEDED RANDOM
+			// ══════════════════════════════════════════
+			let _seed = 137
+			const rng = () => {
+				_seed = (_seed * 1664525 + 1013904223) & 0xffffffff
+				return (_seed >>> 0) / 0xffffffff
+			}
+			const ri = n => Math.floor(rng() * n)
+			const rb = (a, b) => a + rng() * (b - a)
+
+			// ══════════════════════════════════════════
+			//  SOLID TILE GRID
+			// ══════════════════════════════════════════
+			const solid = Array.from(
+				{length: ROWS + 2},
+				() => new Uint8Array(WORLD_W + 2),
+			)
+
+			// Ground
+			for (let x = 0; x < WORLD_W; x++)
+				for (let y = GROUND_Y; y < ROWS; y++) solid[y][x] = 1
+
+			// Platforms
+			const platforms = []
+			let px = 22
+			while (px < WORLD_W - 22) {
+				const w = 5 + ri(8)
+				const y = GROUND_Y - 2 - ri(5)
+				platforms.push({x: px, y, w})
+				for (let dx = 0; dx < w; dx++) solid[y][px + dx] = 1
+				px += w + 8 + ri(10)
+			}
+
+			// ══════════════════════════════════════════
+			//  BACKGROUND DATA  (pre-generated, layered)
+			// ══════════════════════════════════════════
+
+			// Stars (parallax 0.06) ─── farthest layer
+			const stars = Array.from({length: 380}, () => ({
+				wx: rb(0, WORLD_W),
+				wy: ri(GROUND_Y - 3),
+				ch: ['.', '·', '•', '*', '✦', '⋆', '∘', '°'][ri(8)],
+				base: 0.08 + rng() * 0.22,
+				phase: rng() * Math.PI * 2,
+				spd: 0.012 + rng() * 0.035,
+			}))
+
+			// Distant ruins (parallax 0.17)
+			const ruins = []
+			for (let x = 6; x < WORLD_W - 8; x += 11 + ri(18)) {
+				ruins.push({x, h: 4 + ri(11), type: ri(3)})
+			}
+
+			// Near architecture (parallax 0.43)
+			const arch = []
+			for (let x = 10; x < WORLD_W - 10; x += 19 + ri(22)) {
+				arch.push({x, type: ri(2)})
+			}
+
+			// Torches (world-layer, parallax 1.0)
+			const torches = []
+			for (let x = 12; x < WORLD_W - 5; x += 16 + ri(12))
+				torches.push({x, y: GROUND_Y - 1})
+			for (const p of platforms)
+				if (p.w >= 5 && rng() > 0.4)
+					torches.push({x: p.x + Math.floor(p.w / 2), y: p.y - 1})
+
+			// Ground detail runes (random symbols embedded in ground surface)
+			const runes = []
+			for (let x = 3; x < WORLD_W - 3; x += 7 + ri(9))
+				runes.push({x, ch: ['⚔', '✦', '◈', '⬡', '◉', '▣', '⊕'][ri(7)]})
+
+			// ══════════════════════════════════════════
+			//  PLAYER SPRITES  (3 wide × 4 tall)
+			// ══════════════════════════════════════════
+			const SPR = {
+				idleR: [' ◉ ', '─╫─', ' │ ', '╱ ╲'],
+				idleL: [' ◉ ', '─╫─', ' │ ', '╱ ╲'],
+				walkR0: [' ◉ ', '─╫╴', ' │ ', '╱╲ '],
+				walkR1: [' ◉ ', '╶╫─', ' │ ', ' ╱╲'],
+				walkL0: [' ◉ ', '╶╫─', ' │ ', ' ╲╱'],
+				walkL1: [' ◉ ', '─╫╴', ' │ ', '╲╱ '],
+				jumpR: [' ◉ ', '╲╫╱', ' ╿ ', '  ╲'],
+				jumpL: [' ◉ ', '╱╫╲', ' ╿ ', '╱  '],
+			}
+			// Row colors for player sprite
+			const PC = ['#00ff99', '#00ee88', '#00bb77', '#008855']
+
+			// ══════════════════════════════════════════
+			//  PLAYER STATE
+			// ══════════════════════════════════════════
+			const pl = {
+				x: 8 * CW, // pixel x
+				y: (GROUND_Y - 4) * CH, // pixel y
+				vx: 0,
+				vy: 0,
+				dir: 1, // 1=right, -1=left
+				onGround: false,
+				moving: false,
+				wFrame: 0,
+				wTimer: 0,
+				coyote: 0,
+				jBuf: 0,
+			}
+
+			function resetPl() {
+				pl.x = 8 * CW
+				pl.y = (GROUND_Y - 4) * CH
+				pl.vx = 0
+				pl.vy = 0
+			}
+
+			// ══════════════════════════════════════════
+			//  INPUT
+			// ══════════════════════════════════════════
+			const K = {}
+			addEventListener('keydown', e => {
+				K[e.code] = true
+				if (
+					['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(
+						e.code,
+					)
+				)
+					e.preventDefault()
+				if (e.code === 'KeyR') resetPl()
+			})
+			addEventListener('keyup', e => {
+				K[e.code] = false
+			})
+
+			// ══════════════════════════════════════════
+			//  CAMERA
+			// ══════════════════════════════════════════
+			let camX = 0 // float, in cells
+
+			function updateCam() {
+				const target = pl.x / CW - COLS * 0.33
+				camX += (target - camX) * 0.11
+				camX = Math.max(0, Math.min(WORLD_W - COLS, camX))
+			}
+
+			// ══════════════════════════════════════════
+			//  PHYSICS
+			// ══════════════════════════════════════════
+			function isSolid(wx, wy) {
+				if (wx < 0 || wx >= WORLD_W || wy < 0) return false
+				if (wy >= ROWS) return true
+				return solid[wy]?.[wx] === 1
+			}
+
+			function update() {
+				const left = K['ArrowLeft'] || K['KeyA']
+				const right = K['ArrowRight'] || K['KeyD']
+				const jump = K['Space'] || K['ArrowUp'] || K['KeyW']
+
+				// Horizontal
+				if (left) {
+					pl.vx = -MOVE_SPD
+					pl.dir = -1
+					pl.moving = true
+				} else if (right) {
+					pl.vx = MOVE_SPD
+					pl.dir = 1
+					pl.moving = true
+				} else {
+					pl.vx *= 0.62
+					pl.moving = Math.abs(pl.vx) > 0.5
+				}
+
+				// Jump buffer
+				if (jump) pl.jBuf = JBUF
+				if (pl.jBuf > 0) pl.jBuf--
+
+				// Execute jump
+				if (pl.jBuf > 0 && pl.coyote > 0) {
+					pl.vy = JUMP_V
+					pl.jBuf = 0
+					pl.coyote = 0
+				}
+
+				// Gravity
+				pl.vy = Math.min(pl.vy + GRAVITY, 14)
+
+				// ── Move X with collision ──
+				pl.x += pl.vx
+
+				const HL = 0.4 * CW // hitbox left offset in sprite
+				const HR = 2.6 * CW // hitbox right offset in sprite
+				const midRow = Math.floor((pl.y + 2 * CH) / CH)
+
+				if (pl.vx < 0 && isSolid(Math.floor((pl.x + HL) / CW), midRow)) {
+					pl.x = (Math.floor((pl.x + HL) / CW) + 1) * CW - HL
+					pl.vx = 0
+				}
+				const rCol = Math.floor((pl.x + HR) / CW)
+				if (pl.vx > 0 && isSolid(rCol, midRow)) {
+					pl.x = rCol * CW - HR
+					pl.vx = 0
+				}
+				pl.x = Math.max(0, Math.min((WORLD_W - 3) * CW, pl.x))
+
+				// ── Move Y with collision ──
+				pl.y += pl.vy
+
+				const pCL = Math.floor((pl.x + HL) / CW)
+				const pCR = Math.floor((pl.x + HR) / CW)
+
+				pl.onGround = false
+
+				if (pl.vy >= 0) {
+					const feetRow = Math.floor((pl.y + 4 * CH) / CH)
+					if (isSolid(pCL, feetRow) || isSolid(pCR, feetRow)) {
+						pl.y = feetRow * CH - 4 * CH
+						pl.vy = 0
+						pl.onGround = true
+						pl.coyote = COYOTE
+					}
+				} else {
+					const headRow = Math.floor(pl.y / CH)
+					if (isSolid(pCL, headRow) || isSolid(pCR, headRow)) {
+						pl.y = (headRow + 1) * CH
+						pl.vy = 0
+					}
+				}
+
+				if (!pl.onGround && pl.coyote > 0) pl.coyote--
+
+				// Walk anim
+				if (pl.moving && pl.onGround) {
+					if (++pl.wTimer >= 6) {
+						pl.wFrame ^= 1
+						pl.wTimer = 0
+					}
+				} else {
+					pl.wFrame = 0
+					pl.wTimer = 0
+				}
+
+				if (pl.y > ROWS * CH + 80) resetPl()
+			}
+
+			// ══════════════════════════════════════════
+			//  DRAW HELPERS
+			// ══════════════════════════════════════════
+			// World cell → screen pixel X (parallax p, default 1)
+			const tx = wx => (wx - camX) * CW
+			const ty = wy => wy * CH
+			const ptx = (wx, p) => (wx - camX * p) * CW
+
+			function put(ch, sx, sy, color, alpha = 1) {
+				const x = Math.round(sx),
+					y = Math.round(sy)
+				if (
+					x < -CW * 3 ||
+					x > canvas.width + CW ||
+					y < -CH ||
+					y > canvas.height + CH
+				)
+					return
+				ctx.globalAlpha = alpha
+				ctx.fillStyle = color
+				ctx.fillText(ch, x, y)
+				ctx.globalAlpha = 1
+			}
+
+			// Draw at world cell coords
+			const wput = (ch, wx, wy, col, a) => put(ch, tx(wx), ty(wy), col, a)
+			// Draw at world cell coords with parallax
+			const pput = (ch, wx, wy, p, col, a) =>
+				put(ch, ptx(wx, p), ty(wy), col, a)
+
+			// ══════════════════════════════════════════
+			//  RENDER — SKY
+			// ══════════════════════════════════════════
+			function renderSky() {
+				const g = ctx.createLinearGradient(0, 0, 0, GROUND_Y * CH)
+				g.addColorStop(0, '#010009')
+				g.addColorStop(0.4, '#050118')
+				g.addColorStop(1, '#0e0430')
+				ctx.fillStyle = g
+				ctx.fillRect(0, 0, canvas.width, GROUND_Y * CH)
+				// Below-ground fill
+				ctx.fillStyle = '#060220'
+				ctx.fillRect(
+					0,
+					GROUND_Y * CH,
+					canvas.width,
+					canvas.height - GROUND_Y * CH,
+				)
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — STARS  (parallax 0.06)
+			// ══════════════════════════════════════════
+			function renderStars() {
+				for (const s of stars) {
+					s.phase += s.spd
+					const a = s.base + Math.sin(s.phase) * 0.07
+					// Soft horizontal wrap so stars cover screen at any cam position
+					const rawSx = ptx(s.wx, 0.06)
+					const w = canvas.width + CW * 4
+					const sx = ((rawSx + w * 100) % w) - CW * 2
+					if (s.wy < GROUND_Y - 1) put(s.ch, sx, ty(s.wy), '#8866cc', a)
+				}
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — DISTANT RUINS  (parallax 0.17)
+			// ══════════════════════════════════════════
+			function renderRuins() {
+				const P = 0.17
+				for (const r of ruins) {
+					const sx = ptx(r.x, P)
+					if (sx < -CW * 10 || sx > canvas.width + CW * 10) continue
+					const baseY = GROUND_Y - 1
+
+					if (r.type === 0) {
+						// Broken column
+						for (let dy = 0; dy < r.h; dy++) {
+							const ch = dy === 0 ? '╤' : dy === r.h - 1 ? '╥' : '║'
+							put(ch, sx, ty(baseY - dy), dy === 0 ? '#201040' : '#160b30', 0.7)
+						}
+					} else if (r.type === 1) {
+						// Crumbled tower
+						for (let dy = 0; dy < r.h; dy++) {
+							const ch = dy === r.h - 1 ? '▲' : '▓'
+							put(ch, sx, ty(baseY - dy), '#130930', 0.55)
+							put(ch, sx + CW, ty(baseY - dy), '#130930', 0.5)
+						}
+					} else {
+						// Stone arch
+						const aw = 4
+						for (let dy = 0; dy < r.h; dy++) {
+							put('║', sx, ty(baseY - dy), '#180a30', 0.65)
+							put('║', sx + aw * CW, ty(baseY - dy), '#180a30', 0.65)
+						}
+						for (let dx = 0; dx <= aw; dx++) {
+							const ch = dx === 0 ? '╔' : dx === aw ? '╗' : '═'
+							put(ch, sx + dx * CW, ty(baseY - r.h), '#221044', 0.7)
+						}
+					}
+				}
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — NEAR ARCHITECTURE  (parallax 0.43)
+			// ══════════════════════════════════════════
+			function renderArch() {
+				const P = 0.43
+				for (const a of arch) {
+					const sx = ptx(a.x, P)
+					if (sx < -CW * 14 || sx > canvas.width + CW * 14) continue
+					const baseY = GROUND_Y - 1
+
+					if (a.type === 0) {
+						// Ornate pillar (3 wide, 9 tall)
+						const ph = 9
+						for (let dy = 0; dy < ph; dy++) {
+							const wy = baseY - dy
+							const a0 = 0.88
+							if (dy === 0) {
+								put('╧', sx, ty(wy), '#2a1548', a0)
+								put('╧', sx + CW, ty(wy), '#2a1548', a0)
+								put('╧', sx + 2 * CW, ty(wy), '#2a1548', a0)
+							} else if (dy === ph - 1) {
+								put('╔', sx, ty(wy), '#4a2888', a0)
+								put('═', sx + CW, ty(wy), '#4a2888', a0)
+								put('╗', sx + 2 * CW, ty(wy), '#4a2888', a0)
+							} else if (dy % 3 === 1) {
+								put('╠', sx, ty(wy), '#382070', a0)
+								put('═', sx + CW, ty(wy), '#382070', a0)
+								put('╣', sx + 2 * CW, ty(wy), '#382070', a0)
+							} else {
+								put('║', sx, ty(wy), '#28185a', a0)
+								put('║', sx + 2 * CW, ty(wy), '#28185a', a0)
+							}
+						}
+					} else {
+						// Decorated wall section (8 wide, 11 tall)
+						const ww = 8,
+							wh = 11
+						for (let dy = 0; dy < wh; dy++) {
+							const wy = baseY - dy
+							for (let dx = 0; dx <= ww; dx++) {
+								const edge = dx === 0 || dx === ww
+								const inWin = dy >= 3 && dy <= 7 && dx >= 2 && dx <= ww - 2
+								let ch = '▓',
+									col = '#1a0e38'
+								if (dy === 0 || dy === wh - 1) {
+									ch = '▓'
+									col = '#241450'
+								} else if (edge) {
+									ch = '█'
+									col = '#2a1850'
+								} else if (inWin) {
+									const wEdgeH = dy === 3 || dy === 7
+									const wEdgeV = dx === 2 || dx === ww - 2
+									ch = wEdgeH
+										? '═'
+										: wEdgeV
+											? '║'
+											: dy === 5 && dx === 5
+												? '✦'
+												: ' '
+									col = '#5838a0'
+								}
+								put(ch, sx + dx * CW, ty(wy), col, 0.85)
+							}
+						}
+					}
+				}
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — GROUND + PLATFORMS
+			// ══════════════════════════════════════════
+			function renderGround() {
+				const s0 = Math.floor(camX) - 1
+				const s1 = s0 + COLS + 2
+
+				for (let wx = s0; wx <= s1; wx++) {
+					if (wx < 0 || wx >= WORLD_W) continue
+					// Surface row (varied texture)
+					const gc = wx % 6 === 0 ? '▓' : wx % 6 === 3 ? '▒' : '▓'
+					wput(gc, wx, GROUND_Y, '#5a30a0', 1)
+					// Fill below
+					wput('▓', wx, GROUND_Y + 1, '#38186a', 1)
+					for (let ry = GROUND_Y + 2; ry < ROWS; ry++)
+						wput('▓', wx, ry, '#1a0a35', 1)
+				}
+
+				// Ground runes
+				for (const r of runes) {
+					const sc = Math.round(r.x - camX)
+					if (sc >= 0 && sc < COLS) wput(r.ch, r.x, GROUND_Y, '#3a1870', 0.5)
+				}
+
+				// Platforms
+				for (const p of platforms) {
+					const sc = Math.round(p.x - camX)
+					if (sc > COLS + p.w || sc + p.w < -2) continue
+					for (let dx = 0; dx < p.w; dx++) {
+						const ch =
+							dx === 0 ? '╔' : dx === p.w - 1 ? '╗' : dx % 2 === 0 ? '═' : '─'
+						const col = dx === 0 || dx === p.w - 1 ? '#9060e0' : '#7a40cc'
+						wput(ch, p.x + dx, p.y, col, 1)
+						wput('▓', p.x + dx, p.y + 1, '#38186a', 0.95)
+						wput('░', p.x + dx, p.y + 2, '#24104a', 0.7)
+					}
+				}
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — TORCHES
+			// ══════════════════════════════════════════
+			const TORCH_CH = ['▲', '△', '✦', '▲']
+
+			function renderTorches(T) {
+				const tf = TORCH_CH[Math.floor(T / 5) % 4]
+
+				ctx.save()
+				for (const t of torches) {
+					const sx = Math.round(tx(t.x))
+					if (sx < -CW * 2 || sx > canvas.width + CW) continue
+
+					// Radial glow
+					const radius = 32 + Math.sin(T * 0.11 + t.x * 0.7) * 7
+					const gi = 0.055 + Math.sin(T * 0.09 + t.x * 0.4) * 0.02
+					const grad = ctx.createRadialGradient(
+						sx + 5,
+						ty(t.y),
+						1,
+						sx + 5,
+						ty(t.y),
+						radius,
+					)
+					grad.addColorStop(0, `rgba(255,140,0,${gi * 4})`)
+					grad.addColorStop(0.4, `rgba(255,80,0,${gi})`)
+					grad.addColorStop(1, 'rgba(255,50,0,0)')
+					ctx.fillStyle = grad
+					ctx.fillRect(
+						sx - radius,
+						ty(t.y) - radius,
+						radius * 2 + CW,
+						radius * 2 + CH * 2,
+					)
+
+					// Torch chars
+					put(tf, sx, ty(t.y - 1), '#ffcc00', 1.0) // flame
+					put('╪', sx, ty(t.y), '#cc8800', 0.9) // bracket
+					put('│', sx, ty(t.y + 1), '#885500', 0.75) // post
+				}
+				ctx.restore()
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — PLAYER
+			// ══════════════════════════════════════════
+			function renderPlayer() {
+				let spr
+				if (!pl.onGround) spr = pl.dir > 0 ? SPR.jumpR : SPR.jumpL
+				else if (!pl.moving) spr = pl.dir > 0 ? SPR.idleR : SPR.idleL
+				else if (pl.dir > 0) spr = pl.wFrame === 0 ? SPR.walkR0 : SPR.walkR1
+				else spr = pl.wFrame === 0 ? SPR.walkL0 : SPR.walkL1
+
+				const bsx = pl.x - camX * CW
+				const bsy = pl.y
+
+				ctx.save()
+				ctx.shadowColor = '#00ff88'
+				ctx.shadowBlur = 10
+
+				for (let row = 0; row < spr.length; row++) {
+					const line = spr[row]
+					const color = PC[row] ?? PC[PC.length - 1]
+					for (let col = 0; col < line.length; col++) {
+						const ch = line[col]
+						if (ch !== ' ') {
+							ctx.fillStyle = color
+							ctx.fillText(
+								ch,
+								Math.round(bsx) + col * CW,
+								Math.round(bsy) + row * CH,
+							)
+						}
+					}
+				}
+				ctx.restore()
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — FOREGROUND DUST MOTES
+			// ══════════════════════════════════════════
+			const motes = Array.from({length: 40}, () => ({
+				x: rng() * canvas.width,
+				y: rng() * canvas.height * 0.8,
+				vy: -(0.1 + rng() * 0.3),
+				life: rng(),
+				spd: 0.003 + rng() * 0.007,
+			}))
+
+			function renderMotes() {
+				for (const m of motes) {
+					m.y += m.vy
+					m.life += m.spd
+					if (m.y < -CH || m.life > 1) {
+						m.x = rng() * canvas.width
+						m.y = canvas.height
+						m.life = 0
+						m.vy = -(0.1 + rng() * 0.3)
+					}
+					const a = Math.sin(m.life * Math.PI) * 0.3
+					const ch = m.life < 0.5 ? '·' : '.'
+					ctx.globalAlpha = a
+					ctx.fillStyle = '#7755aa'
+					ctx.fillText(ch, Math.round(m.x), Math.round(m.y))
+					ctx.globalAlpha = 1
+				}
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — VIGNETTE
+			// ══════════════════════════════════════════
+			function renderVignette() {
+				const g = ctx.createRadialGradient(
+					canvas.width / 2,
+					canvas.height / 2,
+					canvas.height * 0.28,
+					canvas.width / 2,
+					canvas.height / 2,
+					canvas.height * 0.88,
+				)
+				g.addColorStop(0, 'rgba(0,0,0,0)')
+				g.addColorStop(1, 'rgba(0,0,8,0.65)')
+				ctx.fillStyle = g
+				ctx.fillRect(0, 0, canvas.width, canvas.height)
+			}
+
+			// ══════════════════════════════════════════
+			//  RENDER — SCANLINES (subtle CRT feel)
+			// ══════════════════════════════════════════
+			function renderScanlines() {
+				ctx.fillStyle = 'rgba(0,0,0,0.06)'
+				for (let y = 0; y < canvas.height; y += 2)
+					ctx.fillRect(0, y, canvas.width, 1)
+			}
+
+			// ══════════════════════════════════════════
+			//  MAIN LOOP
+			// ══════════════════════════════════════════
+			let T = 0
+
+			function frame() {
+				T++
+				update()
+				updateCam()
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height)
+				setFont()
+
+				renderSky()
+				renderStars()
+				renderRuins()
+				renderArch()
+				renderGround()
+				renderTorches(T)
+				renderMotes()
+				renderPlayer()
+				renderVignette()
+				renderScanlines()
+
+				// HUD
+				document.getElementById('coords').textContent =
+					`x:${Math.floor(pl.x / CW)
+						.toString()
+						.padStart(3, ' ')} ` +
+					`y:${Math.floor(pl.y / CH)
+						.toString()
+						.padStart(2, ' ')} ` +
+					`${pl.onGround ? '⌊ground⌋' : pl.vy < 0 ? '↑air' : '↓fall'}`
+
+				requestAnimationFrame(frame)
+			}
+
+			frame()
+		</script>
+	</body>
+</html>

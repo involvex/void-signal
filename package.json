@@ -1,0 +1,34 @@
+{
+	"name": "ascii-rpg",
+	"version": "0.0.1",
+	"private": true,
+	"funding": {
+		"url": "https://github.com/sponsors/involvex"
+	},
+	"author": "involvex",
+	"type": "module",
+	"module": "index.ts",
+	"bin": {
+		"ascii-rpg": "src/main.ts"
+	},
+	"scripts": {
+		"prebuild": "bun run format && bun run typecheck",
+		"build": "bun build src/main.ts --outdir dist --target bun",
+		"dev": "bun --watch run src/main.ts",
+		"format": "prettier . --write",
+		"start": "bun run src/main.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"prettier": "@involvex/prettier-config",
+	"devDependencies": {
+		"@involvex/prettier-config": "^0.0.4",
+		"@types/bun": "latest",
+		"prettier": "^3.8.1"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/involvex"
+	}
+}
