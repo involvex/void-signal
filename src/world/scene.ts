@@ -1,6 +1,5 @@
 import type {GroundItem, SceneExit} from '../types.ts'
 import type {RGB} from '../engine/screen-buffer.ts'
-import type {Entity} from '../entities/entity.ts'
 import type {Enemy} from '../entities/enemy.ts'
 import type {NPC} from '../entities/npc.ts'
 

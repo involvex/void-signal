@@ -1,7 +1,6 @@
 import {InputManager, type KeyAction} from '../engine/input.ts'
 import {ScreenBuffer} from '../engine/screen-buffer.ts'
 import {DialogueSystem} from '../systems/dialogue.ts'
-import type {RGB} from '../engine/screen-buffer.ts'
 import {MessageLog} from '../systems/messages.ts'
 import {CombatSystem} from '../systems/combat.ts'
 import {HUD, type HUDLayout} from '../ui/hud.ts'
@@ -9,7 +8,6 @@ import type {Enemy} from '../entities/enemy.ts'
 import {Renderer} from '../engine/renderer.ts'
 import {WorldManager} from '../world/world.ts'
 import {Player} from '../entities/player.ts'
-import type {Scene} from '../world/scene.ts'
 import {Menus} from '../ui/menus.ts'
 
 export type GameState =
@@ -88,10 +86,9 @@ export class GameEngine {
 	}
 
 	private handleTitleInput(action: KeyAction): void {
-		if (action.key === 'enter') {
+		if (action.key === 'e') {
 			this.startGame()
-		}
-		if (action.ctrl && action.key === 'c') {
+		} else if (action.ctrl && action.key === 'c') {
 			this.quit()
 		}
 	}
@@ -366,7 +363,11 @@ export class GameEngine {
 		}
 	}
 
-	private startDialogue(treeId: string, nodeId: string, npcName: string): void {
+	private startDialogue(
+		treeId: string,
+		nodeId: string,
+		_npcName: string,
+	): void {
 		this.dialogue.start(treeId, nodeId)
 		this.state = 'dialogue'
 		this.tickCount = 0
@@ -411,7 +412,7 @@ export class GameEngine {
 
 	private render(): void {
 		const {screen} = this
-		const {width, height} = screen
+		const {width: _width, height: _height} = screen
 
 		switch (this.state) {
 			case 'title':
@@ -456,7 +457,7 @@ export class GameEngine {
 
 	private renderPlaying(): void {
 		const {screen, world, player} = this
-		const {width, height} = screen
+		const {width: _width, height: _height} = screen
 		const scene = world.currentScene
 		const layout = this.hudLayout
 
@@ -480,7 +481,7 @@ export class GameEngine {
 				}
 
 				const tile = scene.tiles[wy]?.[wx] ?? ' '
-				let fg = scene.tileFg[wy]?.[wx] ?? [100, 100, 100]
+				const fg = scene.tileFg[wy]?.[wx] ?? [100, 100, 100]
 				const bg = scene.tileBg[wy]?.[wx] ?? scene.ambientColor
 
 				// Animated torches
@@ -565,15 +566,27 @@ export class GameEngine {
 		this.renderer.initTerminal()
 		this.input.start()
 
+		if (!this.input.inputAvailable) {
+			// Non-interactive mode — still render but warn
+			process.stderr.write(
+				'\x1b[33mWarning: stdin is not a TTY. Input will not work.\x1b[0m\n',
+			)
+			process.stderr.write(
+				'Run this in a real terminal for interactive play.\n',
+			)
+		}
+
 		// Handle resize
-		process.stdout.on('resize', () => {
+		const onResize = () => {
 			const cols = process.stdout.columns || 90
 			const rows = process.stdout.rows || 28
+			if (cols < 40 || rows < 16) return // too small, skip resize
 			this.screen = new ScreenBuffer(cols, rows)
 			this.renderer = new Renderer(this.screen)
 			this.hudLayout = HUD.calculateLayout(cols, rows)
 			this.renderer.forceRedraw()
-		})
+		}
+		process.stdout.on('resize', onResize)
 
 		// Clean exit handlers
 		const cleanup = () => this.quit()

@@ -1,5 +1,4 @@
 import type {RGB} from '../engine/screen-buffer.ts'
-import type {DialogueNode} from '../types.ts'
 import {Entity} from './entity.ts'
 
 export class NPC extends Entity {

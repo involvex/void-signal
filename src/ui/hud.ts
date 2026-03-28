@@ -7,9 +7,7 @@ import type {Scene} from '../world/scene.ts'
 const GREEN: RGB = [0, 255, 0]
 const DARK_GREEN: RGB = [0, 160, 0]
 const BLUE: RGB = [68, 102, 255]
-const DARK_BLUE: RGB = [30, 50, 120]
 const AMBER: RGB = [255, 170, 0]
-const DARK_AMBER: RGB = [120, 80, 0]
 const RED: RGB = [255, 68, 68]
 const DIM: RGB = [100, 100, 100]
 const WHITE: RGB = [200, 200, 200]
@@ -53,11 +51,10 @@ export class HUD {
 		scene: Scene,
 		messages: MessageLog,
 		layout: HUDLayout,
-		tickCount: number,
+		_tickCount: number,
 	): void {
 		const {width, height} = buffer
-		const {viewportW, viewportH, sidebarX, sidebarW, topBarH, bottomBarH} =
-			layout
+		const {viewportW, sidebarX, sidebarW, topBarH, bottomBarH} = layout
 
 		// Top bar background
 		buffer.fillRect(0, 0, width, topBarH, ' ', WHITE, BG)

@@ -1,4 +1,3 @@
-import type {RGB} from '../engine/screen-buffer.ts'
 import type {ItemDef, Stats} from '../types.ts'
 import {Entity} from './entity.ts'
 

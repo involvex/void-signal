@@ -17,6 +17,7 @@ const CURSOR_SHOW = `${ESC}[?25h`
 const ALT_SCREEN_ON = `${ESC}[?1049h`
 const ALT_SCREEN_OFF = `${ESC}[?1049l`
 const CLEAR_SCREEN = `${ESC}[2J${ESC}[H`
+const HOME = `${ESC}[H`
 
 function cursorPos(row: number, col: number): string {
 	return `${ESC}[${row + 1};${col + 1}H`
@@ -26,11 +27,13 @@ export class Renderer {
 	buffer: ScreenBuffer
 	private prevCells: Cell[][] | null
 	private forceFull: boolean
+	private firstFrame: boolean
 
 	constructor(buffer: ScreenBuffer) {
 		this.buffer = buffer
 		this.prevCells = null
 		this.forceFull = false
+		this.firstFrame = true
 	}
 
 	forceRedraw(): void {
@@ -46,7 +49,13 @@ export class Renderer {
 		let prevCursorY = -1
 
 		if (this.forceFull || !this.prevCells) {
-			out.push(CLEAR_SCREEN)
+			// Only use CLEAR_SCREEN on the very first frame
+			if (this.firstFrame) {
+				out.push(CLEAR_SCREEN)
+				this.firstFrame = false
+			} else {
+				out.push(HOME)
+			}
 			this.forceFull = false
 
 			for (let y = 0; y < height; y++) {
@@ -59,8 +68,6 @@ export class Renderer {
 						rgbBg(cell.bg[0], cell.bg[1], cell.bg[2]),
 						cell.char,
 					)
-					prevFg = cell.fg
-					prevBg = cell.bg
 				}
 			}
 		} else {

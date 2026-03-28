@@ -1,4 +1,3 @@
-import type {RGB} from '../engine/screen-buffer.ts'
 import type {Player} from '../entities/player.ts'
 import type {Enemy} from '../entities/enemy.ts'
 import {createItem} from '../entities/item.ts'

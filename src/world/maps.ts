@@ -1,6 +1,4 @@
-import type {RGB} from '../engine/screen-buffer.ts'
 import {createItem} from '../entities/item.ts'
-import type {GroundItem} from '../types.ts'
 import {Enemy} from '../entities/enemy.ts'
 import {NPC} from '../entities/npc.ts'
 import {Scene} from './scene.ts'

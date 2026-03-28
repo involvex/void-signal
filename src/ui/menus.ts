@@ -10,16 +10,15 @@ const WHITE: RGB = [200, 200, 200]
 const DIM: RGB = [100, 100, 100]
 const AMBER: RGB = [255, 170, 0]
 const RED: RGB = [255, 68, 68]
-const BLUE: RGB = [68, 102, 255]
 const BG: RGB = [5, 5, 10]
 
 const TITLE_ART = [
-	' █████╗ ███████╗ ██████╗██╗██╗    ██████╗ ██████╗  ██████╗ ',
-	'██╔══██╗██╔════╝██╔════╝██║██║    ██╔══██╗██╔══██╗██╔════╝ ',
-	'███████║███████╗██║     ██║██║    ██║  ██║██████╔╝██║  ███╗',
-	'██╔══██║╚════██║██║     ██║██║    ██║  ██║██╔══██╗██║   ██║',
-	'██║  ██║███████║╚██████╗██║███████╗██████╔╝██║  ██║╚██████╔╝',
-	'╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ',
+	'██╗   ██╗ ██████╗ ██╗██████╗    ███████╗██╗ ██████╗ ███╗   ██╗',
+	'██║   ██║██╔═══██╗██║██╔══██╗   ██╔════╝██║██╔════╝ ████╗  ██║',
+	'██║   ██║██║   ██║██║██║  ██║   ███████╗██║██║  ███╗██╔██╗ ██║',
+	'╚██╗ ██╔╝██║   ██║██║██║  ██║   ╚════██║██║██║   ██║██║╚██╗██║',
+	' ╚████╔╝ ╚██████╔╝██║██████╔╝   ███████║██║╚██████╔╝██║ ╚████║',
+	'  ╚═══╝   ╚═════╝ ╚═╝╚═════╝    ╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝',
 ]
 
 export class Menus {
@@ -53,9 +52,9 @@ export class Menus {
 			DIM,
 		)
 
-		// Blink "Press ENTER to start"
+		// Blink "Press E to start"
 		if (Math.floor(tickCount / 10) % 2 === 0) {
-			const prompt = '[ Press ENTER to start ]'
+			const prompt = '[ Press E to start ]'
 			buffer.write(
 				Math.floor((width - prompt.length) / 2),
 				artStartY + TITLE_ART.length + 4,
@@ -159,7 +158,7 @@ export class Menus {
 	}
 
 	static renderCombatScreen(buffer: ScreenBuffer, combat: CombatSystem): void {
-		const {width, height} = buffer
+		const {width} = buffer
 		buffer.clear(WHITE, BG)
 
 		const title = `-- COMBAT: ${combat.enemy.name} --`
@@ -227,13 +226,13 @@ export class Menus {
 			}
 		} else if (combat.state === 'victory') {
 			buffer.write(4, 16, 'VICTORY!', GREEN)
-			buffer.write(4, 17, 'Press ENTER to continue.', DIM)
+			buffer.write(4, 17, 'Press E to continue.', DIM)
 		} else if (combat.state === 'defeat') {
 			buffer.write(4, 16, 'DEFEATED...', RED)
-			buffer.write(4, 17, 'Press ENTER to continue.', DIM)
+			buffer.write(4, 17, 'Press E to continue.', DIM)
 		} else if (combat.state === 'fled') {
 			buffer.write(4, 16, 'Escaped!', AMBER)
-			buffer.write(4, 17, 'Press ENTER to continue.', DIM)
+			buffer.write(4, 17, 'Press E to continue.', DIM)
 		}
 	}
 
@@ -243,7 +242,7 @@ export class Menus {
 		npcName: string,
 		tickCount: number,
 	): void {
-		const {width, height} = buffer
+		const {width} = buffer
 		buffer.clear(WHITE, BG)
 
 		const node = dialogue.getCurrentNode()

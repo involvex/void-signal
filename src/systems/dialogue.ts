@@ -1,5 +1,4 @@
-import type {DialogueChoice, DialogueNode} from '../types.ts'
-import type {RGB} from '../engine/screen-buffer.ts'
+import type {DialogueNode} from '../types.ts'
 
 const MERCHANT_DIALOGUE: Record<string, DialogueNode> = {
 	start: {

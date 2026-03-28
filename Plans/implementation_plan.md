@@ -283,7 +283,7 @@ Renders on top of or alongside the game viewport:
 
 Full-screen overlay menus for:
 
-- **Title screen**: ASCII art logo, "Press ENTER to start"
+- **Title screen**: ASCII art logo, "Press E to start"
 - **Inventory screen**: Item list with stats, equip/use/drop actions
 - **Pause menu**: Resume, Save (future), Quit
 - **Combat menu**: Attack, Item, Flee options with arrow-key navigation
@@ -440,7 +440,7 @@ Note: `@xterm/headless` provides the `Terminal` class for headless buffer manage
 
 No formal test framework — verify by running `bun run src/main.ts` and playing through:
 
-1. Title screen appears, press Enter to start
+1. Title screen appears, press E to start
 2. Move player with WASD in town, collision with walls works
 3. Talk to NPC (walk into them), dialogue appears, choices work
 4. Walk north to forest, scene transition works
