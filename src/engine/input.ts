@@ -160,7 +160,8 @@ export class InputManager {
 		const code = raw.charCodeAt(0)
 
 		// Ctrl+letter (0x01-0x1a map to ctrl+a through ctrl+z)
-		if (raw.length === 1 && code >= 1 && code <= 26) {
+		// Exclude \t (9), \n (10), \r (13) — they have dedicated key names below
+		if (raw.length === 1 && code >= 1 && code <= 26 && code !== 9 && code !== 10 && code !== 13) {
 			return {
 				key: String.fromCharCode(code + 96), // 'a' = 97
 				ctrl: true,

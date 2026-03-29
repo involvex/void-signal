@@ -1,0 +1,14 @@
+{
+	"name": "asciiart-extractor",
+	"version": "1.0.0",
+	"description": "ASCII art collection extractor from asciiart.eu",
+	"main": "extract.js",
+	"scripts": {
+		"build-index": "node build-index.js",
+		"extract": "node extract.js"
+	},
+	"dependencies": {
+		"axios": "^1.6.0",
+		"cheerio": "^1.0.0-rc.12"
+	}
+}

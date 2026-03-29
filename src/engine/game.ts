@@ -1,3 +1,4 @@
+import {ArtManager, type ArtPiece} from '../systems/art-manager.ts'
 import {InputManager, type KeyAction} from '../engine/input.ts'
 import {ScreenBuffer} from '../engine/screen-buffer.ts'
 import {DialogueSystem} from '../systems/dialogue.ts'
@@ -9,7 +10,6 @@ import {Renderer} from '../engine/renderer.ts'
 import {WorldManager} from '../world/world.ts'
 import {Player} from '../entities/player.ts'
 import {Menus} from '../ui/menus.ts'
-
 export type GameState =
 	| 'title'
 	| 'playing'
@@ -36,6 +36,10 @@ export class GameEngine {
 	private hudLayout: HUDLayout
 	private invSelectedIndex: number
 	private pauseSelectedIndex: number
+	private artManager: ArtManager
+	private heldMove: {dx: number; dy: number} | null
+	private heldMoveReceivedAt: number
+	private lastMovedAt: number
 
 	constructor() {
 		const cols = process.stdout.columns || 90
@@ -56,7 +60,11 @@ export class GameEngine {
 		this.hudLayout = HUD.calculateLayout(cols, rows)
 		this.invSelectedIndex = 0
 		this.pauseSelectedIndex = 0
+		this.heldMove = null
+		this.heldMoveReceivedAt = 0
+		this.lastMovedAt = 0
 
+		this.artManager = new ArtManager()
 		this.setupInput()
 	}
 
@@ -85,6 +93,10 @@ export class GameEngine {
 		})
 	}
 
+	private async initializeArt(): Promise<void> {
+		await this.artManager.initialize()
+	}
+
 	private handleTitleInput(action: KeyAction): void {
 		if (action.key === 'e') {
 			this.startGame()
@@ -102,23 +114,33 @@ export class GameEngine {
 		switch (action.key) {
 			case 'w':
 			case 'arrowup':
+				this.heldMove = {dx: 0, dy: -1}
+				this.heldMoveReceivedAt = Date.now()
 				this.movePlayer(0, -1)
 				break
 			case 's':
 			case 'arrowdown':
+				this.heldMove = {dx: 0, dy: 1}
+				this.heldMoveReceivedAt = Date.now()
 				this.movePlayer(0, 1)
 				break
 			case 'a':
 			case 'arrowleft':
+				this.heldMove = {dx: -1, dy: 0}
+				this.heldMoveReceivedAt = Date.now()
 				this.movePlayer(-1, 0)
 				break
 			case 'd':
 			case 'arrowright':
+				this.heldMove = {dx: 1, dy: 0}
+				this.heldMoveReceivedAt = Date.now()
 				this.movePlayer(1, 0)
 				break
+			case 'f':
 			case 'e':
 				this.interact()
 				break
+			case 'i':
 			case 'tab':
 				this.state = 'inventory'
 				this.invSelectedIndex = 0
@@ -294,6 +316,7 @@ export class GameEngine {
 	}
 
 	private movePlayer(dx: number, dy: number): void {
+		this.lastMovedAt = Date.now()
 		const newX = this.player.x + dx
 		const newY = this.player.y + dy
 		const scene = this.world.currentScene
@@ -407,7 +430,14 @@ export class GameEngine {
 	}
 
 	private update(): void {
-		// Ambient animations happen every tick
+		if (this.state === 'playing' && this.heldMove) {
+			const now = Date.now()
+			// Key still held (OS auto-repeat keeps this timestamp fresh every ~30ms)
+			// and move cooldown elapsed (80ms ≈ 12 moves/sec)
+			if (now - this.heldMoveReceivedAt < 150 && now - this.lastMovedAt >= 80) {
+				this.movePlayer(this.heldMove.dx, this.heldMove.dy)
+			}
+		}
 	}
 
 	private render(): void {
@@ -425,22 +455,43 @@ export class GameEngine {
 
 			case 'combat': {
 				if (this.combat) {
-					Menus.renderCombatScreen(screen, this.combat)
+					// Get enemy art dynamically based on enemy type
+					const enemyType = this.combat.enemy.name.toLowerCase()
+					let enemyArt: ArtPiece | undefined
+					if (enemyType.includes('wolf') || enemyType.includes('dog')) {
+						enemyArt =
+							this.artManager.getRandomArt('animals/wolves') ?? undefined
+					} else if (enemyType.includes('cat') || enemyType.includes('lion')) {
+						enemyArt = this.artManager.getRandomArt('animals/cats') ?? undefined
+					} else if (enemyType.includes('bat')) {
+						enemyArt = this.artManager.getRandomArt('animals/bats') ?? undefined
+					} else if (enemyType.includes('spider')) {
+						enemyArt =
+							this.artManager.getRandomArt('animals/spiders') ?? undefined
+					} else if (enemyType.includes('frog')) {
+						enemyArt =
+							this.artManager.getRandomArt('animals/frogs') ?? undefined
+					} else {
+						enemyArt = this.artManager.getRandomArt('animals') ?? undefined
+					}
+					Menus.renderCombatScreen(screen, this.combat, enemyArt)
 				}
 				break
 			}
 
 			case 'dialogue': {
-				const npcName = this.dialogue.getCurrentNode()
-					? (this.world.currentScene.npcs.find(
-							n => n.dialogueTreeId === this.dialogue['currentTree'],
-						)?.name ?? 'NPC')
-					: 'NPC'
+				const npc = this.world.currentScene.npcs.find(
+					n => n.dialogueTreeId === this.dialogue['currentTree'],
+				)
+				const npcName = npc?.name ?? 'NPC'
+				// Get NPC art dynamically
+				const npcArt = this.artManager.getRandomArt('people') ?? undefined
 				Menus.renderDialogueScreen(
 					screen,
 					this.dialogue,
 					npcName,
 					this.tickCount,
+					npcArt,
 				)
 				break
 			}
@@ -548,7 +599,7 @@ export class GameEngine {
 			py >= layout.viewportY &&
 			py < layout.viewportY + layout.viewportH
 		) {
-			screen.set(px, py, player.glyph, player.color, scene.ambientColor)
+			screen.set(px, py, player.glyph, player.color, [20, 60, 40])
 		}
 
 		// Render HUD
@@ -575,6 +626,9 @@ export class GameEngine {
 				'Run this in a real terminal for interactive play.\n',
 			)
 		}
+
+		// Initialize art system
+		this.initializeArt().catch(console.error)
 
 		// Handle resize
 		const onResize = () => {

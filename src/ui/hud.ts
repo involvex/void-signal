@@ -27,7 +27,7 @@ export interface HUDLayout {
 
 export class HUD {
 	static calculateLayout(screenW: number, screenH: number): HUDLayout {
-		const sidebarW = 22
+		const sidebarW = 18
 		const topBarH = 3
 		const bottomBarH = 5
 		const viewportW = screenW - sidebarW

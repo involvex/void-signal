@@ -1,5 +1,6 @@
 import type {DialogueSystem} from '../systems/dialogue.ts'
 import {ScreenBuffer} from '../engine/screen-buffer.ts'
+import type {ArtPiece} from '../systems/art-manager.ts'
 import type {CombatSystem} from '../systems/combat.ts'
 import type {RGB} from '../engine/screen-buffer.ts'
 import type {Player} from '../entities/player.ts'
@@ -11,6 +12,17 @@ const DIM: RGB = [100, 100, 100]
 const AMBER: RGB = [255, 170, 0]
 const RED: RGB = [255, 68, 68]
 const BG: RGB = [5, 5, 10]
+
+const ART_WIDTH = 62
+
+const PARTICLE_CHARS = ['·', '·', '·', '•', '∘', '+', '·', '·']
+const PARTICLES = Array.from({length: 55}, (_, i) => ({
+	xFrac: ((i * 47 + i * i * 3 + 11) % 97) / 97,
+	yFrac: ((i * 31 + i * i * 7 + 7) % 89) / 89,
+	char: PARTICLE_CHARS[i % PARTICLE_CHARS.length] ?? '·',
+	period: 10 + (i % 14),
+	phase: (i * 13) % 24,
+}))
 
 const TITLE_ART = [
 	'██╗   ██╗ ██████╗ ██╗██████╗    ███████╗██╗ ██████╗ ███╗   ██╗',
@@ -26,8 +38,21 @@ export class Menus {
 		const {width, height} = buffer
 		buffer.clear(WHITE, BG)
 
+		// Background particles — drawn first so art renders on top
+		for (const p of PARTICLES) {
+			const px = Math.floor(p.xFrac * width)
+			const py = Math.floor(p.yFrac * (height - 2)) + 1
+			const t = (tickCount + p.phase) % p.period
+			const half = p.period / 2
+			if (t < half) {
+				const fade = t < half / 2 ? t / (half / 2) : (half - t) / (half / 2)
+				const brightness = Math.floor(fade * 90) + 15
+				buffer.set(px, py, p.char, [0, brightness, 0], BG)
+			}
+		}
+
 		const artStartY = Math.floor((height - TITLE_ART.length - 6) / 2)
-		const artStartX = Math.floor((width - 60) / 2)
+		const artStartX = Math.floor((width - ART_WIDTH) / 2)
 
 		for (let i = 0; i < TITLE_ART.length; i++) {
 			const line = TITLE_ART[i]
@@ -63,7 +88,7 @@ export class Menus {
 			)
 		}
 
-		const controls = 'WASD: Move | E: Interact | Tab: Inventory | ESC: Menu'
+		const controls = 'WASD: Move | F: Interact | I: Inventory | ESC: Menu'
 		buffer.write(
 			Math.floor((width - controls.length) / 2),
 			height - 2,
@@ -155,14 +180,40 @@ export class Menus {
 				i === selectedIndex ? AMBER : WHITE,
 			)
 		}
+
+		const hint = '[ENTER] Select  [ESC] Close'
+		buffer.write(
+			Math.floor((width - hint.length) / 2),
+			Math.floor(height / 2) + options.length + 1,
+			hint,
+			DIM,
+		)
 	}
 
-	static renderCombatScreen(buffer: ScreenBuffer, combat: CombatSystem): void {
+	static renderCombatScreen(
+		buffer: ScreenBuffer,
+		combat: CombatSystem,
+		enemyArt?: ArtPiece | null,
+	): void {
 		const {width} = buffer
 		buffer.clear(WHITE, BG)
 
 		const title = `-- COMBAT: ${combat.enemy.name} --`
 		buffer.write(Math.floor((width - title.length) / 2), 1, title, RED)
+
+		// Enemy ASCII art display (right side)
+		if (enemyArt) {
+			const artX = width - Math.min(enemyArt.width, 30) - 4
+			const artY = 3
+			const lines = enemyArt.art.split('\n')
+			for (let i = 0; i < Math.min(lines.length, 12); i++) {
+				const line = lines[i]
+				if (line) {
+					const truncated = line.substring(0, 28)
+					buffer.write(artX, artY + i, truncated, combat.enemy.color)
+				}
+			}
+		}
 
 		// Enemy HP
 		buffer.write(4, 3, `${combat.enemy.name}`, combat.enemy.color)
@@ -226,13 +277,13 @@ export class Menus {
 			}
 		} else if (combat.state === 'victory') {
 			buffer.write(4, 16, 'VICTORY!', GREEN)
-			buffer.write(4, 17, 'Press E to continue.', DIM)
+			buffer.write(4, 17, 'Press ENTER or ESC to continue.', DIM)
 		} else if (combat.state === 'defeat') {
 			buffer.write(4, 16, 'DEFEATED...', RED)
-			buffer.write(4, 17, 'Press E to continue.', DIM)
+			buffer.write(4, 17, 'Press ENTER or ESC to continue.', DIM)
 		} else if (combat.state === 'fled') {
 			buffer.write(4, 16, 'Escaped!', AMBER)
-			buffer.write(4, 17, 'Press E to continue.', DIM)
+			buffer.write(4, 17, 'Press ENTER or ESC to continue.', DIM)
 		}
 	}
 
@@ -241,6 +292,7 @@ export class Menus {
 		dialogue: DialogueSystem,
 		npcName: string,
 		tickCount: number,
+		npcArt?: ArtPiece | null,
 	): void {
 		const {width} = buffer
 		buffer.clear(WHITE, BG)
@@ -248,29 +300,51 @@ export class Menus {
 		const node = dialogue.getCurrentNode()
 		if (!node) return
 
-		// NPC portrait area
-		buffer.write(4, 2, `[ ${npcName} ]`, AMBER)
+		// NPC ASCII art display (left side)
+		if (npcArt) {
+			const artX = 2
+			const artY = 2
+			const lines = npcArt.art.split('\n')
+			for (let i = 0; i < Math.min(lines.length, 10); i++) {
+				const line = lines[i]
+				if (line) {
+					const truncated = line.substring(0, 20)
+					buffer.write(artX, artY + i, truncated, AMBER)
+				}
+			}
+		}
+
+		// NPC name and portrait area
+		const nameX = npcArt ? 24 : 4
+		buffer.write(nameX, 2, `[ ${npcName} ]`, AMBER)
 
 		// Dialogue text with typewriter effect
+		const textStartX = npcArt ? 24 : 5
 		const charsToShow = Math.min(node.text.length, Math.floor(tickCount / 2))
 		const visibleText = node.text.substring(0, charsToShow)
 		const textLines = []
-		for (let i = 0; i < visibleText.length; i += width - 10) {
-			textLines.push(visibleText.substring(i, i + width - 10))
+		const maxLineLen = width - textStartX - 4
+		for (let i = 0; i < visibleText.length; i += maxLineLen) {
+			textLines.push(visibleText.substring(i, i + maxLineLen))
 		}
 		for (let i = 0; i < textLines.length; i++) {
 			const line = textLines[i]
-			if (line) buffer.write(5, 4 + i, line, WHITE)
+			if (line) buffer.write(textStartX, 4 + i, line, WHITE)
 		}
 
 		// Choices
 		if (charsToShow >= node.text.length) {
 			const choiceStartY = 4 + textLines.length + 2
-			buffer.write(4, choiceStartY - 1, '--', DIM)
+			buffer.write(textStartX - 1, choiceStartY - 1, '--', DIM)
 			for (let i = 0; i < node.choices.length; i++) {
 				const choice = node.choices[i]
 				if (choice) {
-					buffer.write(5, choiceStartY + i, `${i + 1}. ${choice.text}`, AMBER)
+					buffer.write(
+						textStartX,
+						choiceStartY + i,
+						`${i + 1}. ${choice.text}`,
+						AMBER,
+					)
 				}
 			}
 		}

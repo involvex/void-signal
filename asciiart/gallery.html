@@ -1,0 +1,1987 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="copyright" content="Injosoft AB" />
+		<meta name="revisit-after" content="10 Days" />
+		<script
+			async
+			src="https://cdn.fuseplatform.net/publift/tags/2/3083/fuse.js"
+		></script>
+		<meta
+			name="keyword"
+			content="ASCII Art, ASCII drawings, text art, ASCII collection, ASCII gallery, keyboard art"
+		/>
+		<meta
+			name="description"
+			content="Browse the complete ASCII Art Gallery on asciiart.eu with a wide range of text-based artworks. From small and fun ASCII sketches to more advanced designs, discover and enjoy the world of ASCII art."
+		/>
+		<link rel="canonical" href="https://www.asciiart.eu/gallery" />
+		<title>ASCII Art Gallery - ASCII Art Archive</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Rationale&display=swap"
+			rel="stylesheet"
+		/>
+
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=UA-68824650-9"
+		></script>
+		<script type="text/javascript">
+			window.dataLayer = window.dataLayer || []
+			function gtag() {
+				dataLayer.push(arguments)
+			}
+			gtag('js', new Date())
+		</script>
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0d47a1" />
+		<meta name="msapplication-TileColor" content="#2d89ef" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+			crossorigin="anonymous"
+		/>
+
+		<script>
+			;(() => {
+				const m = matchMedia('(prefers-color-scheme: light)')
+				document.documentElement.setAttribute(
+					'data-bs-theme',
+					m.matches ? 'dark' : 'light',
+				)
+				m.addEventListener?.('change', e => {
+					try {
+						if ((localStorage.getItem('theme') || 'auto') === 'auto') {
+							document.documentElement.setAttribute(
+								'data-bs-theme',
+								e.matches ? 'dark' : 'light',
+							)
+						}
+					} catch {}
+				})
+			})()
+		</script>
+
+		<link href="/css/themes.css?v=6.5" rel="stylesheet" />
+		<link href="/css/custom.css?v=6.5" rel="stylesheet" />
+		<style></style>
+	</head>
+	<body data-page="gallery">
+		<nav class="navbar">
+			<div class="container-fluid justify-content-between">
+				<div class="d-flex align-items-center">
+					<button
+						class="btn btn-navbar me-2 d-lg-none"
+						type="button"
+						data-bs-toggle="offcanvas"
+						data-bs-target="#sidemenu"
+						aria-controls="sidemenu"
+						aria-label="Open left menu"
+					>
+						<i class="icon-bars"></i>
+					</button>
+					<button
+						class="btn btn-navbar border-0 me-2 d-none d-lg-inline"
+						id="toggleSidemenu"
+						aria-label="Toggle left menu width"
+					>
+						<i class="icon-bars"></i>
+					</button>
+					<a class="navbar-brand mt-1" href="/">ASCII Art Archive</a>
+				</div>
+
+				<div
+					class="btn-group d-none d-md-flex"
+					role="group"
+					aria-label="Button group with nested dropdown"
+				>
+					<a
+						href="/ascii-draw-studio/app"
+						type="button"
+						class="btn btn-sm btn-light rounded-start-pill border-0 me-1 px-4"
+						>Start drawing</a
+					>
+					<div class="btn-group" role="group">
+						<button
+							type="button"
+							class="btn btn-sm btn-light rounded-end-pill dropdown-toggle"
+							data-bs-toggle="dropdown"
+							aria-expanded="false"
+						></button>
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li>
+								<a class="dropdown-item" href="/image-to-ascii"
+									><i class="icon-image-to-ascii icon-solid me-1"></i> Image to
+									ASCII Art</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/text-to-ascii-art"
+									><i class="icon-fig icon-solid me-1"></i> Text to ASCII Art</a
+								>
+							</li>
+							<li><hr class="dropdown-divider" /></li>
+							<li>
+								<a class="dropdown-item" href="/ascii-borders/maker"
+									><i class="icon-border icon-solid me-1"></i> Border Maker</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/ascii-dividers/maker"
+									><i class="icon-divider icon-solid me-1"></i> Divider Maker</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/ascii-maze-generator"
+									><i class="icon-maze-generator icon-solid me-1"></i> Maze
+									Generator</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/ascii-night-sky-generator"
+									><i class="icon-sparkles icon-solid me-1"></i> Night Sky
+									Generator</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/ascii-patterns/maker"
+									><i class="icon-dots icon-solid me-1"></i> Pattern Maker</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/webcam-to-ascii-art"
+									><i class="icon-webcam icon-solid me-1"></i> Webcam to ASCII
+									Art</a
+								>
+							</li>
+							<li><hr class="dropdown-divider" /></li>
+							<li>
+								<a class="dropdown-item" href="/tools/ascii-art-analyzer"
+									><i class="icon-image-analyze icon-solid me-1"></i> ASCII Art
+									Analyzer</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/tools/ascii-validator"
+									><i class="icon-shield-check1 icon-solid me-1"></i> ASCII
+									Validator</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/tools/case-converter"
+									><i class="icon-font-case2 icon-solid me-1"></i> Case
+									Converter</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/tools/character-counter"
+									><i class="icon-character-counter icon-solid me-1"></i>
+									Character Counter</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/tools/text-cleaner"
+									><i class="icon-text-cleaner icon-solid me-1"></i> Text
+									Cleaner</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="/tools/word-counter"
+									><i class="icon-character-counter icon-solid me-1"></i> Word
+									Counter</a
+								>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<ul class="navbar-nav flex-row gap-2">
+					<li class="nav-item text-nowrap">
+						<div class="position-relative d-none d-lg-block">
+							<form action="/search" method="get">
+								<i
+									class="icon-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted"
+								></i>
+								<input
+									type="search"
+									name="q"
+									class="form-control form-control-sm ps-5"
+									placeholder="Search ASCII Art"
+									required
+									maxlength="30"
+								/>
+							</form>
+						</div>
+						<button
+							id="mobileSearchToggle"
+							class="btn btn-navbar d-block d-lg-none"
+							title="Search ASCII Art"
+						>
+							<i class="icon-search"></i>
+						</button>
+					</li>
+					<li class="nav-item text-nowrap">
+						<button
+							class="btn btn-navbar"
+							data-bs-toggle="modal"
+							data-bs-target="#login-modal"
+							title="Login"
+						>
+							<i class="icon-user"></i
+							><span class="d-none d-md-inline"> Login</span>
+						</button>
+					</li>
+					<li class="nav-item text-nowrap d-none d-sm-inline">
+						<button
+							class="btn btn-navbar"
+							type="button"
+							data-bs-toggle="offcanvas"
+							data-bs-target="#settingsPanel"
+							aria-controls="settingsPanel"
+							title="Settings"
+						>
+							<i class="icon-cog"></i>
+						</button>
+					</li>
+				</ul>
+
+				<div
+					id="mobileSearchBar"
+					class="navbar-search w-100 h-100 d-none position-absolute top-0 start-0 p-2 z-3"
+				>
+					<form
+						action="/search"
+						method="get"
+						class="w-100 h-100 d-flex align-items-center"
+					>
+						<i
+							class="icon-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted"
+						></i>
+						<input
+							type="search"
+							name="q"
+							class="form-control form-control-sm border-light pe-2 py-1"
+							placeholder="Search ASCII Art"
+							id="mobileSearchInput"
+						/>
+					</form>
+				</div>
+			</div>
+		</nav>
+
+		<div
+			class="offcanvas offcanvas-end context-menu"
+			tabindex="-1"
+			id="settingsPanel"
+		>
+			<div class="offcanvas-header py-2">
+				<h2 class="offcanvas-title font-rationale">Settings</h2>
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="offcanvas"
+					aria-label="Close"
+				></button>
+			</div>
+			<div class="offcanvas-body">
+				<div class="alert alert-warning px-2 py-1 small">
+					The page will reload to apply your changes.
+				</div>
+				<div class="h6">Theme</div>
+				<div class="form-check href">
+					<input
+						class="form-check-input"
+						type="radio"
+						name="theme"
+						id="themeAuto"
+						value="auto"
+						checked
+					/>
+					<label class="form-check-label" for="themeAuto">Auto</label>
+				</div>
+				<div class="form-check href">
+					<input
+						class="form-check-input"
+						type="radio"
+						name="theme"
+						id="themeLight"
+						value="light"
+					/>
+					<label class="form-check-label" for="themeLight">Light</label>
+				</div>
+				<div class="form-check href">
+					<input
+						class="form-check-input"
+						type="radio"
+						name="theme"
+						id="themeDark"
+						value="dark"
+					/>
+					<label class="form-check-label" for="themeDark">Dark</label>
+				</div>
+				<!--div class="form-check href">
+            <input class="form-check-input" type="radio" name="theme" id="themeDarkGreen" value="darkgreen" />
+            <label class="form-check-label" for="themeDarkGreen">DarkGreen</label>
+        </div-->
+				<!--small class="fw-medium">Retro themes</small>
+        <div class="form-check href">
+            <input class="form-check-input" type="radio" name="theme" id="themeCommodore" value="commodore" />
+            <label class="form-check-label" for="themeCommodore">Commodore 64</label>
+        </div>
+        <div class="form-check href">
+            <input class="form-check-input" type="radio" name="theme" id="themeDos" value="dos" />
+            <label class="form-check-label" for="themeDos">Microsoft Dos</label>
+        </div>
+        <div class="form-check href">
+            <input class="form-check-input" type="radio" name="theme" id="themeJgs" value="jgs7" />
+            <label class="form-check-label" for="themeJgs">Joan G. Stark</label>
+        </div-->
+				<hr />
+				<div class="h6">ASCII Art Font</div>
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_default"
+                        value="default"
+                    checked                />
+                <label class="form-check-label" for="font_default">
+                    Default                                    </label>
+            </div-->
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_commodore"
+                        value="commodore"
+                                    />
+                <label class="form-check-label" for="font_commodore">
+                    Commodore                                    </label>
+            </div-->
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_jgs5"
+                        value="jgs5"
+                                    />
+                <label class="form-check-label" for="font_jgs5">
+                    Jgs5                                            <small>(sizes multiples of 10)</small>
+                                    </label>
+            </div-->
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_jgs7"
+                        value="jgs7"
+                                    />
+                <label class="form-check-label" for="font_jgs7">
+                    Jgs7                                            <small>(sizes multiples of 14)</small>
+                                    </label>
+            </div-->
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_jgs9"
+                        value="jgs9"
+                                    />
+                <label class="form-check-label" for="font_jgs9">
+                    Jgs9                                            <small>(sizes multiples of 18)</small>
+                                    </label>
+            </div-->
+				<!--div class="form-check href">
+                <input
+                        class="form-check-input"
+                        type="radio"
+                        name="preFont"
+                        id="font_ibm"
+                        value="ibm"
+                                    />
+                <label class="form-check-label" for="font_ibm">
+                    IBM VGA 8x16                                    </label>
+            </div-->
+			</div>
+		</div>
+
+		<div class="main-wrapper">
+			<div
+				class="offcanvas offcanvas-start offcanvas-lg sidemenu"
+				tabindex="-1"
+				id="sidemenu"
+				aria-label="Left menu"
+			>
+				<div class="offcanvas-header d-lg-none py-2">
+					<h2 class="offcanvas-title font-rationale">ASCII Art Menu</h2>
+					<button
+						type="button"
+						class="btn-close text-reset"
+						data-bs-dismiss="offcanvas"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="offcanvas-body py-2">
+					<ul class="nav flex-column mb-4">
+						<li class="nav-item">
+							<a id="nav-home" class="nav-link" href="/"
+								><i class="icon-home"></i><span>Home</span></a
+							>
+						</li>
+						<li class="nav-item"><hr class="nav-divider" /></li>
+						<li class="nav-item">
+							<a id="nav-gallery" class="nav-link" href="/gallery"
+								><i class="icon-images"></i><span>ASCII Art Gallery</span></a
+							>
+						</li>
+						<li class="nav-item"><hr class="nav-divider" /></li>
+						<li class="nav-item">
+							<a id="nav-animations" class="nav-link" href="/animations"
+								><i class="icon-film"></i><span>ASCII Animations</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-collections" class="nav-link" href="/collections"
+								><i class="icon-books"></i><span>ASCII Art Collections</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-art-tools" class="nav-link" href="/tools"
+								><i class="icon-tools"></i><span>ASCII Art Tools</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-draw-studio" class="nav-link" href="/ascii-draw-studio"
+								><i class="icon-paint-brush"></i
+								><span>ASCII Draw Studio</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-borders" class="nav-link" href="/ascii-borders"
+								><i class="icon-square"></i><span>ASCII Borders</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-dividers" class="nav-link" href="/ascii-dividers"
+								><i class="icon-divider"></i><span>ASCII Dividers</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-games" class="nav-link" href="/ascii-games"
+								><i class="icon-gamepad"></i><span>ASCII Games</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-patterns" class="nav-link" href="/ascii-patterns"
+								><i class="icon-dots"></i><span>ASCII Patterns</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-one-line" class="nav-link" href="/one-line"
+								><i class="icon-one"></i><span>One Line ASCII Art</span></a
+							>
+						</li>
+						<li class="nav-item"><hr class="nav-divider" /></li>
+						<li class="nav-item">
+							<a id="nav-shop" class="nav-link" href="/binaryia"
+								><i class="icon-store"></i><span>Shop</span></a
+							>
+						</li>
+						<li class="nav-item"><hr class="nav-divider" /></li>
+						<li class="nav-item">
+							<a id="nav-artists" class="nav-link" href="/artists"
+								><i class="icon-users"></i><span>ASCII Artists</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-faq" class="nav-link" href="/faq"
+								><i class="icon-question-circle"></i
+								><span>ASCII Art FAQ</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-glossary" class="nav-link" href="/glossary"
+								><i class="icon-study"></i><span>ASCII Art Glossary</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-links" class="nav-link" href="/ascii-art-links"
+								><i class="icon-link"></i><span>ASCII Art Links</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a
+								id="nav-table"
+								class="nav-link"
+								href="https://www.ascii-code.com"
+								><i class="icon-table"></i><span>ASCII Table</span></a
+							>
+						</li>
+						<li class="nav-item">
+							<a id="nav-history" class="nav-link" href="/history-of-ascii-art"
+								><i class="icon-history"></i
+								><span>History of ASCII Art</span></a
+							>
+						</li>
+						<li class="nav-item"><hr class="nav-divider" /></li>
+						<li class="nav-item">
+							<a id="nav-ascii-fun" class="nav-link" href="/ascii-fun"
+								><i class="icon-lightbulb-on"></i><span>ASCII Fun</span></a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="main-content" id="mainContent" role="main">
+				<div class="container-wide">
+					<!--
+                            <div class="row justify-content-center">
+                    <div class="col flex-center">
+                        <div id="message-released" class="alert alert-success alert-dismissible fade show mt-2 ps-4 pe-5 text-start text-success-emphasis fw-semibold" role="alert">
+                            ASCII Art Archive v2 – Now live with a new layout and weekly updates. <a href="/release-notes">Read more</a>.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="hideReleaseInfo();"></button>
+                        </div>
+                    </div>
+                </div>
+                        -->
+					<div class="row justify-content-center">
+						<div class="col px-0 px-md-2">
+							<div class="text-center">
+								<div class="text-truncate mt-2 small d-none d-md-block">
+									<span
+										>Explore a large collection of ASCII art from simple designs
+										to detailed creations.</span
+									>
+								</div>
+								<div class="ascii-art-label rounded m-0">
+									<div class="d-none d-md-inline">
+										<pre class="p-0 m-0 mb-2">
+    _    ____   ____ ___ ___      _         _      ____       _ _                 
+   / \  / ___| / ___|_ _|_ _|    / \   _ __| |_   / ___| __ _| | | ___ _ __ _   _ 
+  / _ \ \___ \| |    | | | |    / _ \ | '__| __| | |  _ / _` | | |/ _ \ '__| | | |
+ / ___ \ ___) | |___ | | | |   / ___ \| |  | |_  | |_| | (_| | | |  __/ |  | |_| |
+/_/   \_\____/ \____|___|___| /_/   \_\_|   \__|  \____|\__,_|_|_|\___|_|   \__, |
+                                                                            |___/ </pre
+										>
+									</div>
+									<div class="d-block d-md-none d-flex">
+										<div class="ascii-art-label-return">
+											<a
+												href="/"
+												class="d-flex align-items-center justify-content-center h-100 px-2"
+												title="Home"
+												><i class="icon-home icon-solid"></i
+											></a>
+										</div>
+										<div class="pixelify-sans-400 flex-fill text-truncate px-2">
+											ASCII Art Gallery
+										</div>
+										<div class="ascii-art-label-menu">
+											<button
+												class="btn border-0 d-flex align-items-center justify-content-center h-100 px-2"
+												type="button"
+												data-bs-toggle="offcanvas"
+												data-bs-target="#context-menu"
+												aria-controls="context-menu"
+											>
+												<i class="icon-ellipsis-v icon-solid"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div
+					class="offcanvas offcanvas-end sidebar context-menu"
+					tabindex="-1"
+					id="context-menu"
+				>
+					<div class="offcanvas-header py-2">
+						<h2 class="offcanvas-title font-rationale">ASCII Art Gallery</h2>
+						<button
+							type="button"
+							class="btn-close text-reset"
+							data-bs-dismiss="offcanvas"
+							aria-label="Close"
+						></button>
+					</div>
+					<div class="offcanvas-body py-2">
+						<ul class="nav flex-column mb-4">
+							<li class="nav-item">
+								<a id="nav-sidebar-animals" class="nav-link" href="/animals"
+									><i class="icon-folder"></i><span>Animals</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-art-and-design"
+									class="nav-link"
+									href="/art-and-design"
+									><i class="icon-folder"></i><span>Art and design</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-books" class="nav-link" href="/books"
+									><i class="icon-folder"></i><span>Books</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-buildings-and-places"
+									class="nav-link"
+									href="/buildings-and-places"
+									><i class="icon-folder"></i><span>Buildings & places</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-cartoons" class="nav-link" href="/cartoons"
+									><i class="icon-folder"></i><span>Cartoons</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-clothing-and-accessories"
+									class="nav-link"
+									href="/clothing-and-accessories"
+									><i class="icon-folder"></i
+									><span>Clothing & accessories</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-comics" class="nav-link" href="/comics"
+									><i class="icon-folder"></i><span>Comics</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-computers" class="nav-link" href="/computers"
+									><i class="icon-folder"></i><span>Computers</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-electronics"
+									class="nav-link"
+									href="/electronics"
+									><i class="icon-folder"></i><span>Electronics</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-food-and-drinks"
+									class="nav-link"
+									href="/food-and-drinks"
+									><i class="icon-folder"></i><span>Food and drinks</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-holiday-and-events"
+									class="nav-link"
+									href="/holiday-and-events"
+									><i class="icon-folder"></i><span>Holiday & events</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-logos" class="nav-link" href="/logos"
+									><i class="icon-folder"></i><span>Logos</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-miscellaneous"
+									class="nav-link"
+									href="/miscellaneous"
+									><i class="icon-folder"></i><span>Miscellaneous</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-movies" class="nav-link" href="/movies"
+									><i class="icon-folder"></i><span>Movies</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-music" class="nav-link" href="/music"
+									><i class="icon-folder"></i><span>Music</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-mythology" class="nav-link" href="/mythology"
+									><i class="icon-folder"></i><span>Mythology</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-nature" class="nav-link" href="/nature"
+									><i class="icon-folder"></i><span>Nature</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-one-line" class="nav-link" href="/one-line"
+									><i class="icon-folder"></i><span>One-line</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-people" class="nav-link" href="/people"
+									><i class="icon-folder"></i><span>People</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-plants" class="nav-link" href="/plants"
+									><i class="icon-folder"></i><span>Plants</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-religion" class="nav-link" href="/religion"
+									><i class="icon-folder"></i><span>Religion</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-space" class="nav-link" href="/space"
+									><i class="icon-folder"></i><span>Space</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-sports-and-outdoors"
+									class="nav-link"
+									href="/sports-and-outdoors"
+									><i class="icon-folder"></i><span>Sports & outdoors</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-television"
+									class="nav-link"
+									href="/television"
+									><i class="icon-folder"></i><span>Television</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-toys" class="nav-link" href="/toys"
+									><i class="icon-folder"></i><span>Toys</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-vehicles" class="nav-link" href="/vehicles"
+									><i class="icon-folder"></i><span>Vehicles</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a
+									id="nav-sidebar-video-games"
+									class="nav-link"
+									href="/video-games"
+									><i class="icon-folder"></i><span>Video games</span></a
+								>
+							</li>
+							<li class="nav-item">
+								<a id="nav-sidebar-weapons" class="nav-link" href="/weapons"
+									><i class="icon-folder"></i><span>Weapons</span></a
+								>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="container-wide">
+					<div class="row justify-content-center mt-4">
+						<div class="col col-md-11 col-lg-10 col-xl-9 col-xxl-8">
+							<div class="ascii-frame">
+								Welcome to the
+								<h1 class="d-inline-block h6 mb-0">ASCII Art Gallery</h1>
+								, part of the ASCII Art Archive. Explore one of the largest
+								online collections of text-based artworks, featuring everything
+								from simple sketches to detailed designs.
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col mt-3" style="min-height: 90px">
+							<div data-fuse="22882339584"></div>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col">
+							<div class="d-flex flex-wrap justify-content-center gap-2">
+								<a
+									href="/animals"
+									class="card card-href card-gallery"
+									title="Animals"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+(__)           
+oo )_______   
+|_/\       |\ 
+    ||___  | \
+    ||   W||  </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Animals
+									</div>
+								</a>
+								<a
+									href="/art-and-design"
+									class="card card-href card-gallery"
+									title="Art and design"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   __   
+  /_/\  
+ _\_\/_ 
+/_/\/_/\
+\_\/\_\/</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Art and design
+									</div>
+								</a>
+								<a
+									href="/books"
+									class="card card-href card-gallery"
+									title="Books"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+    _______ 
+   /      /,
+  /      // 
+ /______//  
+(______(/   </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Books
+									</div>
+								</a>
+								<a
+									href="/buildings-and-places"
+									class="card card-href card-gallery"
+									title="Buildings & places"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   ))      
+ .-#-----. 
+/_________\
+ |[] _ []| 
+ |  |*|  | </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Buildings & places
+									</div>
+								</a>
+								<a
+									href="/cartoons"
+									class="card card-href card-gallery"
+									title="Cartoons"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+ (+)(+) 
+/      \
+\ -==- /
+ \    / 
+<\/\/\/>
+/      \</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Cartoons
+									</div>
+								</a>
+								<a
+									href="/clothing-and-accessories"
+									class="card card-href card-gallery"
+									title="Clothing & accessories"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  .--=   =--.  
+ /    \./    \ 
+(__|   :   |__)
+   |   :   |   
+   |   :   |   
+   |___:___|   </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Clothing & accessories
+									</div>
+								</a>
+								<a
+									href="/comics"
+									class="card card-href card-gallery"
+									title="Comics"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   ___   
+ _(___)_ 
+()'   `()
+.' o o `.
+:  _O_  :
+`. \_/ .'
+ .`---'. </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Comics
+									</div>
+								</a>
+								<a
+									href="/computers"
+									class="card card-href card-gallery"
+									title="Computers"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  .------.   
+  |      |   
+ _|______|_  
+|  ______--| 
+`-/.::::.\-'a
+ `--------'  </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Computers
+									</div>
+								</a>
+								<a
+									href="/electronics"
+									class="card card-href card-gallery"
+									title="Electronics"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  _______ 
+ |__/-\[]|
+ |  (_)  |
+ |_______|
+    /|\   </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Electronics
+									</div>
+								</a>
+								<a
+									href="/food-and-drinks"
+									class="card card-href card-gallery"
+									title="Food and drinks"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   ( (  )  
+    ) ( )  
+   .....   
+.:::::::::.
+~\_______/~</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Food and drinks
+									</div>
+								</a>
+								<a
+									href="/holiday-and-events"
+									class="card card-href card-gallery"
+									title="Holiday & events"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   , , ,   
+   | | |   
+ |~~~~~~~| 
+ |~~~~~~~| 
+~~~~~~~~~~~</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Holiday & events
+									</div>
+								</a>
+								<a
+									href="/logos"
+									class="card card-href card-gallery"
+									title="Logos"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   _....._   
+ ,'   |   `. 
+f     |     Y
+|    /|\    |
+l   / | \   j
+ `./  |  \,' 
+    """""    </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Logos
+									</div>
+								</a>
+								<a
+									href="/miscellaneous"
+									class="card card-href card-gallery"
+									title="Miscellaneous"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+___    A    
+| |   {*}   
+| |  __V__  
+|_|o_|%%%|0_
+   |       |
+   |       |
+   |_______|</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Miscellaneous
+									</div>
+								</a>
+								<a
+									href="/movies"
+									class="card card-href card-gallery"
+									title="Movies"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+   ,   
+__/ \__
+\     /
+/_   _\
+  \ /  
+   '   </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Movies
+									</div>
+								</a>
+								<a
+									href="/music"
+									class="card card-href card-gallery"
+									title="Music"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  :&:  
+   #   
+   #   
+  _#_  
+ ( # ) 
+ / O \ 
+( === )
+ `---' </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Music
+									</div>
+								</a>
+								<a
+									href="/mythology"
+									class="card card-href card-gallery"
+									title="Mythology"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+(    )
+|\^^/|
+(0::0)
+ \\// 
+ (oo) 
+/ \/ \</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Mythology
+									</div>
+								</a>
+								<a
+									href="/nature"
+									class="card card-href card-gallery"
+									title="Nature"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+    |    
+  \ _ /  
+-= (_) =-
+  /   \  
+    |    </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Nature
+									</div>
+								</a>
+								<a
+									href="/one-line"
+									class="card card-href card-gallery"
+									title="One-line"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+\(^-^)/</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										One-line
+									</div>
+								</a>
+								<a
+									href="/people"
+									class="card card-href card-gallery"
+									title="People"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+ ////^\\\\ 
+ | ^   ^ | 
+(|(o) (o)|)
+ |   J   | 
+ |  ___  | 
+  \_____/  
+ __/| |\__ </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										People
+									</div>
+								</a>
+								<a
+									href="/plants"
+									class="card card-href card-gallery"
+									title="Plants"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  @()  
+ ()@() 
+()@()@)
+ _\|/_ 
+|-----|
+ \___/ </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Plants
+									</div>
+								</a>
+								<a
+									href="/religion"
+									class="card card-href card-gallery"
+									title="Religion"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+(\  _  /)
+( \( )/ )
+(       )
+ `>   <' 
+ /     \ 
+ `-._.-' </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Religion
+									</div>
+								</a>
+								<a
+									href="/space"
+									class="card card-href card-gallery"
+									title="Space"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+o       o
+ \_____/ 
+ /=O=O=\ 
+/   ^   \
+\ \___/ /
+ \__V__/ </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Space
+									</div>
+								</a>
+								<a
+									href="/sports-and-outdoors"
+									class="card card-href card-gallery"
+									title="Sports & outdoors"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+__________
+|   __   |
+|  |__|  |
+|___WW___|
+    ||    
+    ||    
+    ||    </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Sports & outdoors
+									</div>
+								</a>
+								<a
+									href="/television"
+									class="card card-href card-gallery"
+									title="Television"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+ ___________ 
+|  .----.  o|
+| |      | o|
+| |      | o|
+|__`----`___|
+ "         " </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Television
+									</div>
+								</a>
+								<a
+									href="/toys"
+									class="card card-href card-gallery"
+									title="Toys"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  __,__  
+ {~._.~} 
+  ( Y )  
+() ~|~ ()
+ (_)-(_) </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Toys
+									</div>
+								</a>
+								<a
+									href="/vehicles"
+									class="card card-href card-gallery"
+									title="Vehicles"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+    ___    
+ __|[|]\__ 
+|         |
+`-(o)-(o)-'</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Vehicles
+									</div>
+								</a>
+								<a
+									href="/video-games"
+									class="card card-href card-gallery"
+									title="Video games"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+ _____ 
+|.---.|
+||___||
+|+  .'|
+| _ _ |
+|_____/</pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Video games
+									</div>
+								</a>
+								<a
+									href="/weapons"
+									class="card card-href card-gallery"
+									title="Weapons"
+									draggable="false"
+								>
+									<div class="card-body p-1 flex-center overflow-hidden">
+										<pre class="mb-0" style="display: inline-block">
+  ______.
+~(_]---' 
+/_(      </pre
+										>
+									</div>
+									<div class="card-footer text-center px-1 py-1 fw-medium">
+										Weapons
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="row justify-content-center mt-6">
+						<div class="col col-md-10 col-xxl-8">
+							<div class="ascii-frame">
+								<h2 class="h5">More ASCII Collections</h2>
+								In addition to the main gallery categories, you can also explore
+								these special ASCII collections focusing on patterns, one line
+								row, borders and dividers that complement your ASCII art.
+							</div>
+						</div>
+					</div>
+
+					<div class="row justify-content-center row-gap-3 mt-3">
+						<div class="col-12 col-md-5 col-xxl-4">
+							<a
+								href="/ascii-patterns/gallery"
+								class="card card-href h-100"
+								title="ASCII Pattern Gallery"
+							>
+								<div class="card-body">
+									<i
+										class="icon-pattern-generator float-start m-2"
+										style="font-size: 4rem; opacity: 0.8"
+									></i>
+									<h2 class="h6 card-link">ASCII Pattern Gallery</h2>
+									Discover ASCII patterns and textures that can be repeated or
+									customized to enhance your creations.
+								</div>
+							</a>
+						</div>
+						<div class="col-12 col-md-5 col-xxl-4">
+							<a
+								href="/ascii-borders/gallery"
+								class="card card-href h-100"
+								title="ASCII Border Gallery"
+							>
+								<div class="card-body">
+									<i
+										class="icon-border float-start m-2"
+										style="font-size: 4rem; opacity: 0.8"
+									></i>
+									<h2 class="h6 card-link">ASCII Border Gallery</h2>
+									Browse a selection of ASCII borders perfect for framing text
+									art, designs, or creative projects.
+								</div>
+							</a>
+						</div>
+					</div>
+					<div class="row justify-content-center row-gap-3 mt-3">
+						<div class="col-12 col-md-5 col-xxl-4">
+							<a
+								href="/ascii-dividers/gallery"
+								class="card card-href h-100"
+								title="ASCII Divider Gallery"
+							>
+								<div class="card-body">
+									<i
+										class="icon-divider2 float-start m-2"
+										style="font-size: 4rem; opacity: 0.8"
+									></i>
+									<h2 class="h6 card-link">ASCII Divider Gallery</h2>
+									Find ASCII dividers and separators to add structure and style
+									to your text-based artworks.
+								</div>
+							</a>
+						</div>
+						<div class="col-12 col-md-5 col-xxl-4">
+							<a
+								href="/one-line"
+								class="card card-href h-100"
+								title="One Line Gallery"
+							>
+								<div class="card-body">
+									<i
+										class="icon-one float-start m-2"
+										style="font-size: 4rem; opacity: 0.8"
+									></i>
+									<h2 class="h6 card-link">One Line Gallery</h2>
+									Browse fun and minimal ASCII creations that fit on one line,
+									ideal for chats, titles, or quick decorations.
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="row justify-content-md-center mt-5">
+						<div class="col-12 col-sm-10 col-md-8 col-lg-8 col-xl-6">
+							<div class="card">
+								<div class="card-body d-flex py-0">
+									<img
+										src="/images/respectasciiartists.gif"
+										alt="Respect ASCII Artists Campaign"
+										height="181"
+										width="98"
+									/>
+									<div class="ms-2 flex-center">
+										<div>
+											<h5>Respect ASCII Artists Campaign</h5>
+											<p>
+												ASCII art is available to be enjoyed, used and shared.
+												But, give respect to the original artist and leave their
+												initials on the work..
+											</p>
+											<a
+												href="https://asciiartist.com/respectartistscampaign.html"
+												>Read more</a
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal" id="login-modal" tabindex="-1">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Login</h5>
+								<button
+									type="button"
+									class="btn-close"
+									data-bs-dismiss="modal"
+									aria-label="Close"
+								></button>
+							</div>
+							<form method="post" action="/account/login?redirect=%2Fgallery">
+								<input
+									type="hidden"
+									name="csrf_token"
+									value="c9bb9a7441a6b9ebfaef785b6d949bd5b580c2a9613f0b82ecd5b60565f3bf10"
+								/>
+								<div class="modal-body">
+									<div class="mb-3">
+										<label for="modal-email" class="form-label"
+											>Email address</label
+										>
+										<input
+											type="email"
+											class="form-control"
+											id="modal-email"
+											name="email"
+											required
+											autocomplete="email"
+										/>
+									</div>
+									<div class="mb-3">
+										<label for="modal-password" class="form-label"
+											>Password</label
+										>
+										<input
+											type="password"
+											class="form-control"
+											id="modal-password"
+											name="password"
+											required
+											autocomplete="current-password"
+										/>
+									</div>
+									<div class="form-check">
+										<input
+											type="checkbox"
+											class="form-check-input"
+											id="modal-remember"
+											name="remember"
+										/>
+										<label class="form-check-label" for="modal-remember"
+											>Remember me</label
+										>
+									</div>
+								</div>
+								<div class="modal-footer justify-content-between">
+									<div class="small">
+										<a href="/account/forgot">Forgot password?</a>
+									</div>
+									<div>
+										<a
+											href="/account/register"
+											class="btn btn-outline-secondary me-2"
+											>Register</a
+										>
+										<button type="submit" class="btn btn-primary">Login</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="container-wide text-center mt-5">
+					<footer class="footer">
+						<hr
+							class="repeat-hr"
+							data-content="^-"
+							data-content-end="^"
+							data-max-width="850"
+						/>
+						<div class="d-inline-block small w-sm-90">
+							<span class="d-inline d-xl-block"
+								>The ASCII art of this website has been created by many
+								different artists and credit has been given where the artist is
+								known.</span
+							>
+							<span
+								>If you use ASCII artwork from here, please do not remove the
+								artists name/initials if they are present.</span
+							>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+								<div class="mt-4 d-flex flex-wrap justify-content-center gap-3">
+									<a class="hover-underline" href="/about-ascii-art-archive"
+										>About ASCII Art Archive</a
+									>
+									<a class="hover-underline" href="/acknowledgments"
+										>Acknowledgments</a
+									>
+									<a class="hover-underline" href="/release-notes"
+										>What’s New</a
+									>
+									<a class="hover-underline" href="/link-to-us">Link To Us</a>
+									<a class="hover-underline" href="/cookie-policy"
+										>Cookie policy</a
+									>
+									<a class="hover-underline" href="/privacy-policy"
+										>Privacy policy</a
+									>
+									<a class="hover-underline" href="/terms-of-use"
+										>Terms of Use</a
+									>
+									<a
+										class="hover-underline change-consent"
+										href="#"
+										onclick="
+											window.__tcfapi('displayConsentUi', 2, function () {})
+											return false
+										"
+										tabindex="0"
+										>Consent</a
+									>
+								</div>
+							</div>
+						</div>
+						<div class="mt-4">
+							Copyright &copy; 2026
+							<a href="http://www.injosoft.com/">Injosoft</a
+							><span class="d-none d-sm-inline">. All Rights Reserved.</span>
+						</div>
+						<div class="mt-4 mb-5">
+							<small
+								><i
+									class="icon-heart text-danger"
+									style="font-size: 90%"
+									title="Love"
+								></i>
+								Be kind!</small
+							>
+						</div>
+					</footer>
+				</div>
+			</div>
+		</div>
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+			crossorigin="anonymous"
+		></script>
+		<script>
+			;(() => {
+				'use strict'
+				const {page: e, subpage: t} = document.body.dataset || {},
+					n = e => {
+						const t = e && document.getElementById(e)
+						return (
+							!!t &&
+							(t.classList.add('active'),
+							t.setAttribute('aria-current', 'page'),
+							!0)
+						)
+					}
+				e && n('nav-' + e)
+				!(!!t && n('nav-sidebar-' + t)) && e && n('nav-sidebar-' + e)
+				const o = (e, t = document) => t.querySelector(e),
+					a = (e, t = document) => Array.from(t.querySelectorAll(e)),
+					i = () => window.innerWidth >= 992,
+					s = {
+						set(
+							e,
+							t,
+							{
+								days: n = 180,
+								path: o = '/',
+								sameSite: a = 'Lax',
+								secure: i = 'https:' === location.protocol,
+							} = {},
+						) {
+							const s = 24 * n * 60 * 60
+							let r = `${encodeURIComponent(e)}=${encodeURIComponent(t)}; Max-Age=${s}; Path=${o}; SameSite=${a}`
+							;(i && (r += '; Secure'), (document.cookie = r))
+						},
+						get: e =>
+							document.cookie
+								.split('; ')
+								.map(e => e.split('='))
+								.reduce(
+									(e, [t, n]) => (
+										(e[decodeURIComponent(t)] = n ? decodeURIComponent(n) : ''),
+										e
+									),
+									{},
+								)[e],
+					},
+					r = (() => {
+						const e = 'theme',
+							t = new Set(['commodore', 'msdos']),
+							n = document.documentElement,
+							o = matchMedia('(prefers-color-scheme: dark)')
+						let a = !1
+						const i = () => s.get(e) || localStorage.getItem(e) || 'auto',
+							r = e => {
+								if ('auto' === e) {
+									const e = o.matches ? 'dark' : 'light'
+									return (
+										n.setAttribute('data-bs-theme', e),
+										void (
+											a ||
+											(o.addEventListener?.('change', e => {
+												'auto' === i() &&
+													n.setAttribute(
+														'data-bs-theme',
+														e.matches ? 'dark' : 'light',
+													)
+											}),
+											(a = !0))
+										)
+									)
+								}
+								n.setAttribute('data-bs-theme', e)
+							}
+						return {
+							initControls: () => {
+								const n = i()
+								;(t.has(n) || r(n),
+									(e => {
+										const t = '#t' + e.charAt(0).toUpperCase() + e.slice(1),
+											n = document.querySelector(t)
+										n && (n.checked = !0)
+									})(n),
+									document
+										.querySelectorAll('input[name="theme"]')
+										.forEach(n => {
+											n.addEventListener('change', () =>
+												(n => {
+													try {
+														localStorage.setItem(e, n)
+													} catch {}
+													;(s.set(e, n), t.has(n) ? location.reload() : r(n))
+												})(n.value),
+											)
+										}))
+							},
+						}
+					})(),
+					d = (() => {
+						function e() {
+							document.querySelectorAll('.repeat-hr').forEach(e => {
+								const t = e.dataset.content || '-',
+									n = e.dataset.contentEnd || '',
+									o = getComputedStyle(e).fontFamily,
+									a = parseFloat(e.dataset.maxWidth),
+									i = e.clientWidth || 0,
+									s = Number.isFinite(a) ? Math.min(i, a) : i,
+									r = (function (e, t = 'monospace') {
+										const n = document.createElement('span')
+										;((n.style.visibility = 'hidden'),
+											(n.style.position = 'absolute'),
+											(n.style.whiteSpace = 'nowrap'),
+											(n.style.fontFamily = t),
+											(n.textContent = e),
+											document.body.appendChild(n))
+										const o = n.offsetWidth / Math.max(1, e.length)
+										return (n.remove(), o)
+									})(t, o),
+									d = t.length * r
+								let c = d > 0 ? Math.floor((s + 0.5) / d) - 1 : 0
+								;(c < 0 && (c = 0),
+									e.setAttribute('data-fill', t.repeat(c) + n))
+							})
+						}
+						return {
+							init: () => {
+								;(e(),
+									window.addEventListener('resize', e),
+									window.addEventListener('orientationchange', e),
+									document.fonts?.ready && document.fonts.ready.then(e))
+							},
+							refresh: () => e(),
+							destroy: () => {
+								;(window.removeEventListener('resize', e),
+									window.removeEventListener('orientationchange', e))
+							},
+						}
+					})(),
+					c = {
+						enableFor: e => {
+							a('.nav-link', e).forEach(e => {
+								const t = e.querySelector('span'),
+									n = (t ? t.textContent : e.textContent).trim()
+								e.setAttribute('aria-label', n)
+								const o = bootstrap.Tooltip.getInstance(e)
+								o
+									? (o.setContent({'.tooltip-inner': n}), o.enable())
+									: new bootstrap.Tooltip(e, {
+											title: n,
+											placement: 'right',
+											trigger: 'hover focus',
+											container: 'body',
+											boundary: 'viewport',
+											delay: {show: 150, hide: 50},
+										})
+							})
+						},
+						disableFor: e => {
+							a('.nav-link', e).forEach(e => {
+								const t = bootstrap.Tooltip.getInstance(e)
+								t && t.dispose()
+							})
+						},
+					},
+					l = (() => {
+						const e = o('#sidemenu'),
+							t = o('#mainContent'),
+							n = o('#toggleSidemenu')
+						if (!e || !t) return {init: () => {}}
+						const a = () => e.classList.contains('collapsed'),
+							r = () => {
+								i() && a() ? c.enableFor(e) : c.disableFor(e)
+							},
+							d = () => {
+								i() &&
+									(e.classList.toggle('collapsed'),
+									t.classList.toggle('collapsed'),
+									r(),
+									i() && s.set('sidemenu_collapsed', a() ? '1' : '0'))
+							},
+							l = ((e, t = 150) => {
+								let n
+								return (...o) => {
+									;(clearTimeout(n), (n = setTimeout(() => e(...o), t)))
+								}
+							})(() => {
+								r()
+							}, 120)
+						return {
+							init: () => {
+								;(n?.addEventListener('click', d),
+									r(),
+									window.addEventListener('resize', l),
+									e.addEventListener('shown.bs.offcanvas', r),
+									e.addEventListener('hidden.bs.offcanvas', r))
+							},
+						}
+					})(),
+					m = (() => {
+						const e = o('#mobileSearchToggle'),
+							t = o('#mobileSearchBar'),
+							n = o('#mobileSearchInput'),
+							a = () => {
+								t && (t.classList.remove('d-none'), n?.focus())
+							},
+							i = () => {
+								t && t.classList.add('d-none')
+							}
+						return {
+							init: () => {
+								e &&
+									t &&
+									n &&
+									(e.addEventListener('click', a),
+									n.addEventListener('keydown', e => {
+										'Escape' === e.key && i()
+									}),
+									n.addEventListener('blur', () => {
+										setTimeout(i, 200)
+									}))
+							},
+						}
+					})(),
+					u = {
+						init: () => {
+							;(r.initControls(), l.init(), m.init(), d.init())
+						},
+					}
+				'loading' === document.readyState
+					? document.addEventListener('DOMContentLoaded', u.init, {once: !0})
+					: u.init()
+			})()
+
+			;(function () {
+				const Cookie = {
+					set(
+						name,
+						value,
+						{
+							days = 180,
+							path = '/',
+							sameSite = 'Lax',
+							secure = location.protocol === 'https:',
+						} = {},
+					) {
+						const maxAge = days * 24 * 60 * 60
+						let str = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; Max-Age=${maxAge}; Path=${path}; SameSite=${sameSite}`
+						if (secure) str += '; Secure'
+						document.cookie = str
+					},
+					get(name) {
+						return document.cookie
+							.split('; ')
+							.map(x => x.split('='))
+							.reduce(
+								(acc, [k, v]) => (
+									(acc[decodeURIComponent(k)] = v ? decodeURIComponent(v) : ''),
+									acc
+								),
+								{},
+							)[name]
+					},
+				}
+
+				window.hideReleaseInfo = function () {
+					Cookie.set('release_info_hidden', '1', {days: 365})
+				}
+
+				// Run after DOM is ready
+				document.addEventListener('DOMContentLoaded', () => {
+					const radios = document.querySelectorAll(
+						'input[type="radio"][name="preFont"]',
+					)
+					if (!radios.length) return
+
+					// Handle change -> set cookie -> reload
+					radios.forEach(radio => {
+						radio.addEventListener(
+							'change',
+							e => {
+								const value = e.target.value
+
+								// Avoid redundant reloads if nothing actually changed
+								if (Cookie.get('preFont') === value) return
+
+								try {
+									Cookie.set('preFont', value) // 180 days by default
+								} catch (err) {
+									console.error('Failed to set preFont cookie:', err)
+								}
+
+								// (Optional) brief delay to let UI update/accessibility announce
+								setTimeout(() => {
+									// Disable inputs to prevent double triggers
+									radios.forEach(r => (r.disabled = true))
+									// Reload the page to apply the new preview font
+									location.reload()
+								}, 100)
+							},
+							{passive: true},
+						)
+					})
+				})
+			})()
+
+			// Account panel theme sync
+			;(function () {
+				var radios = document.querySelectorAll('input[name="accountTheme"]')
+				if (!radios.length) return
+				// Sync initial state from cookie/localStorage
+				var current =
+					(document.cookie.match(/(?:^|; )theme=([^;]*)/) || [])[1] ||
+					localStorage.getItem('theme') ||
+					'auto'
+				radios.forEach(function (r) {
+					r.checked = r.value === current
+				})
+				// Handle change
+				radios.forEach(function (r) {
+					r.addEventListener('change', function () {
+						var v = r.value
+						document.cookie =
+							'theme=' + v + '; Max-Age=15552000; Path=/; SameSite=Lax'
+						try {
+							localStorage.setItem('theme', v)
+						} catch (e) {}
+						// Sync settings panel radios
+						var s = document.querySelector(
+							'input[name="theme"][value="' + v + '"]',
+						)
+						if (s) s.checked = true
+						// Apply theme
+						if (v === 'auto') {
+							document.documentElement.setAttribute(
+								'data-bs-theme',
+								matchMedia('(prefers-color-scheme: dark)').matches
+									? 'dark'
+									: 'light',
+							)
+						} else {
+							document.documentElement.setAttribute('data-bs-theme', v)
+						}
+					})
+				})
+			})()
+		</script>
+	</body>
+</html>

@@ -7,7 +7,7 @@ export class Player extends Entity {
 	equipment: {weapon: ItemDef | null; armor: ItemDef | null}
 
 	constructor(x: number, y: number) {
-		super(x, y, '@', [0, 255, 153], 'Player') // #00ff99
+		super(x, y, '@', [255, 255, 180], 'Player') // warm white/yellow — distinct from NPCs/enemies
 		this.stats = {
 			hp: 80,
 			maxHp: 80,
